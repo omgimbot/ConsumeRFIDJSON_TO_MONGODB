@@ -15,8 +15,6 @@ const mongodbCollectionsync = "usercard";
 const mongodbCollectioninstansi = "instansi";
 
 // Fungsi untuk menyimpan pesan ke MongoDB dengan nomor urut yang diincrement
-// Fungsi untuk menyimpan pesan ke MongoDB dengan nomor urut yang diincrement
-// Fungsi untuk menyimpan pesan ke MongoDB dengan nomor urut yang diincrement
 async function saveToMongoDB(message) {
   try {
     const client = await MongoClient.connect(mongodbUrl);
@@ -31,26 +29,19 @@ async function saveToMongoDB(message) {
     if (existingData) {
       console.log("RFID sudah terdaftar dalam database.");
 
-      // Ambil data terkait dari TABEL 3
+      // Ambil data terkait dari TABEL 3 hanya jika belum ada
       const relatedData = await collectionsync.findOne({ CARD_ID: message.UID });
 
-      if (relatedData) {
-        // Ambil USER_ID dari TABEL 2 berdasarkan GUID dari TABEL 3
-        const instansiData = await collectioninstansi.findOne({ GUID: relatedData.USER_ID });
+      if (!relatedData) {
+        console.log("ini related data");
 
-        console.log("Data terkait dari TABEL 3:", relatedData);
-
-        if (instansiData) {
-          // Ambil dan tampilkan nama INSTANSI dari TABEL 2 berdasarkan USER_ID
-          const instansiName = instansiData.INSTANSI;
-          console.log("Nama INSTANSI:", instansiName);
+        // ... (lanjutkan dengan proses yang diperlukan untuk menyimpan data terkait TABEL 3)
       } else {
-        console.log("Data terkait tidak ditemukan dalam TABEL 3.");
+        console.log("Data terkait dari TABEL 3 sudah ada dalam database.");
       }
 
       return;
     }
-  }
 
     // Mendapatkan nomor urut terakhir
     const lastDocument = await collection.findOne({}, { sort: { _id: -1 } });
@@ -80,6 +71,7 @@ async function saveToMongoDB(message) {
     console.error("Error saat menyimpan pesan di MongoDB:", error);
   }
 }
+
 
 
 
