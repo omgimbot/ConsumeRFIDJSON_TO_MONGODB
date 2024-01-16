@@ -31,13 +31,15 @@ async function saveToMongoDB(message) {
 
       // Ambil data terkait dari TABEL 3 hanya jika belum ada
       const relatedData = await collectionsync.findOne({ CARD_ID: message.UID });
+      // const instansiData = await collectioninstansi.findOne({ USER_ID });
 
-      if (!relatedData) {
-        console.log("ini related data");
+      if (relatedData) {
+        console.log("ini related data " + relatedData.USER_ID);
+        console.log("ini related data " + relatedData.CARD_ID);
 
         // ... (lanjutkan dengan proses yang diperlukan untuk menyimpan data terkait TABEL 3)
       } else {
-        console.log("Data terkait dari TABEL 3 sudah ada dalam database.");
+        console.log("...");
       }
 
       return;
