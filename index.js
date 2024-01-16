@@ -17,6 +17,7 @@ const mongodbCollectioninstansi = "instansi";
 // Fungsi untuk menyimpan pesan ke MongoDB dengan nomor urut yang diincrement
 async function saveToMongoDB(message) {
   try {
+    message.UID = message.UID.replace(/\s/g, '');
     const client = await MongoClient.connect(mongodbUrl);
     const db = client.db(mongodbDatabase);
     const collection = db.collection(mongodbCollection);
